@@ -9,24 +9,8 @@ class Ability
         can [:edit, :update], User do |current_user|
             user.id == current_user.id
         end
-        Ability.context_types.each do |context, v|
-            user.roles.each do |role|
-                return nil if v['permissions'][role].nil?
-                v['permissions'][role].each do |action|
-                    if action['path'].nil?
-                        action.each do |object, scope|
-                            can action.to_sym, v == 'all' ? object.to_sym : object.send(scope)
-                        end
-                    else
-                        can action.to_sym, v == 'all' ? object.to_sym : object.send(scope) do |cx|
-                            cx.id == action['path'].split(',').inject(object) {|res, elem| res = res.send(elem)}.id
-                        end
-                    end
-                end
-                v['permissions'][role].each do |action, object|
-                    can action.to_sym, object == 'all' ? object.to_sym : object.constantize
-                end
-            end
+        if user.is_admin?
+            can :manage, :all
         end
     end
     # Define abilities for the passed in user here. For example:

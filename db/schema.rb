@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140330144826) do
+ActiveRecord::Schema.define(version: 20140330180630) do
 
   create_table "assignment_configs", force: true do |t|
     t.integer  "assignment_id"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140330144826) do
     t.boolean  "pass"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "source"
   end
 
   create_table "assignments", force: true do |t|

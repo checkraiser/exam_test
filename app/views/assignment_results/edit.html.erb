@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @assignment_result %> |
-<%= link_to 'Back', assignment_results_path %>
+<%= link_to 'Show', [@course, @assignment, @assignment_result] %> |
+<%= link_to 'Back', course_assignment_assignment_results_path(@course, @assignment) %>

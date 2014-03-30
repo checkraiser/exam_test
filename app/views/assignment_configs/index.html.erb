@@ -18,9 +18,9 @@
         <td><%= assignment_config.assignment_id %></td>
         <td><%= assignment_config.input %></td>
         <td><%= assignment_config.output %></td>
-        <td><%= link_to 'Show', assignment_config %></td>
-        <td><%= link_to 'Edit', edit_assignment_config_path(assignment_config) %></td>
-        <td><%= link_to 'Destroy', assignment_config, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', course_assignment_assignment_config_path(@course, @assignment, assignment_config) %></td>
+        <td><%= link_to 'Edit', edit_course_assignment_assignment_config_path(@course, @assignment, assignment_config) %></td>
+        <td><%= link_to 'Destroy', course_assignment_assignment_config_path(@course, @assignment, assignment_config), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +28,5 @@
 
 <br>
 
-<%= link_to 'New Assignment config', new_assignment_config_path %>
+<%= link_to 'New Assignment config', new_course_assignment_assignment_config_path(@course, @assignment) %>
+<%= link_to 'Back to assignment', course_assignment_path(@course, @assignment) %>

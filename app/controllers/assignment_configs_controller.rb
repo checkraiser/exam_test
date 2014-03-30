@@ -6,6 +6,7 @@ class AssignmentConfigsController < ApplicationController
   # GET /assignment_configs
   # GET /assignment_configs.json
   def index
+    authorize! :manage, Assignment
     @assignment_configs = @assignment.assignment_configs
   end
 
@@ -27,11 +28,15 @@ class AssignmentConfigsController < ApplicationController
   # POST /assignment_configs.json
   def create
     authorize! :manage, @course
-    @assignment_config = @assignment.assignment_configs.new(assignment_config_params)
+    input_file = params[:input]
+    input_content = input_file.read
+    output_file = params[:output]
+    output_content = output_file.read
+    @assignment_config = @assignment.assignment_configs.new({input: input_content, output: output_content})
 
     respond_to do |format|
       if @assignment_config.save
-        format.html { redirect_to @assignment_config, notice: 'Assignment config was successfully created.' }
+        format.html { redirect_to [@course, @assignment, @assignment_config], notice: 'Assignment config was successfully created.' }
         format.json { render action: 'show', status: :created, location: @assignment_config }
       else
         format.html { render action: 'new' }
@@ -43,9 +48,13 @@ class AssignmentConfigsController < ApplicationController
   # PATCH/PUT /assignment_configs/1
   # PATCH/PUT /assignment_configs/1.json
   def update
+    input_file = assignment_config_params[:input]
+    input_content = input_file.read
+    output_file = assignment_config_params[:output]
+    output_content = output_file.read
     respond_to do |format|
-      if @assignment_config.update(assignment_config_params)
-        format.html { redirect_to @assignment_config, notice: 'Assignment config was successfully updated.' }
+      if @assignment_config.update({input: input_content, output: output_content})
+        format.html { redirect_to [@course, @assignment, @assignment_config], notice: 'Assignment config was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -59,7 +68,7 @@ class AssignmentConfigsController < ApplicationController
   def destroy
     @assignment_config.destroy
     respond_to do |format|
-      format.html { redirect_to assignment_configs_url }
+      format.html { redirect_to course_assignment_assignment_configs_url(@course, @assignment) }
       format.json { head :no_content }
     end
   end

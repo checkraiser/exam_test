@@ -7,6 +7,9 @@ types:
       read: 
         all: all
     permissions:
+      admin:
+        manage:
+          all: all
       course_manager:
         manage: 
           Course: all

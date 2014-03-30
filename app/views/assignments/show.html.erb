@@ -20,5 +20,6 @@
   <%= @assignment.description %>
 </p>
 
+<%= link_to 'Config', course_assignment_assignment_configs_path(@course, @assignment) %>
 <%= link_to 'Edit', edit_course_assignment_path(@course, @assignment) %> |
 <%= link_to 'Back', course_assignments_path(@course) %>
