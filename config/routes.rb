@@ -1,16 +1,19 @@
 Exam::Application.routes.draw do
-  resources :assignment_results
+  resources :roles
 
-  resources :assignment_configs
-
-  resources :assignments
-
-  resources :enrollments
-
-  get "home/index"
+  root to: "home#index"
   devise_for :users
-  resources :courses
+  resources :courses do 
+    resources :enrollments
+    resources :assignments do 
+      resources :assignment_configs
+      resources :assignment_results
+    end
+  end
 
+  namespace :admin do 
+    resources :courses
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.all
+    @assignments = @course.assignments
   end
 
   # GET /assignments/1
@@ -15,7 +15,7 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/new
   def new
-    @assignment = Assignment.new
+    @assignment = @course.assignments.new
   end
 
   # GET /assignments/1/edit
@@ -25,11 +25,11 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.json
   def create
-    @assignment = Assignment.new(assignment_params)
+    @assignment = @course.assignments.new(assignment_params)
 
     respond_to do |format|
       if @assignment.save
-        format.html { redirect_to @assignment, notice: 'Assignment was successfully created.' }
+        format.html { redirect_to [@course, @assignment], notice: 'Assignment was successfully created.' }
         format.json { render action: 'show', status: :created, location: @assignment }
       else
         format.html { render action: 'new' }
@@ -43,7 +43,7 @@ class AssignmentsController < ApplicationController
   def update
     respond_to do |format|
       if @assignment.update(assignment_params)
-        format.html { redirect_to @assignment, notice: 'Assignment was successfully updated.' }
+        format.html { redirect_to [@course, @assignment], notice: 'Assignment was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -57,7 +57,7 @@ class AssignmentsController < ApplicationController
   def destroy
     @assignment.destroy
     respond_to do |format|
-      format.html { redirect_to assignments_url }
+      format.html { redirect_to course_assignments_path(@course) }
       format.json { head :no_content }
     end
   end
@@ -68,11 +68,11 @@ class AssignmentsController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_assignment
-      @assignment = Assignment.find(params[:id])
+      @assignment = @course.assignments.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def assignment_params
-      params.require(:assignment).permit(:course_id, :title, :content, :description)
+      params.require(:assignment).permit(:title, :content, :description)
     end
 end

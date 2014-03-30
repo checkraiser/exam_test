@@ -1,0 +1,27 @@
+types:
+  site:
+    roles:
+      - admin
+      - course_manager
+    public_permissions: &public
+      read: 
+        all: all
+    permissions:
+      course_manager:
+        manage: 
+          Course: all
+        <<: *public
+  course:
+    roles:
+      - teacher
+      - student
+    permissions:
+      teacher:
+        manage: 
+          Course: all
+      student:
+        read:
+          Course: all
+        update:
+          path: 'assignment'
+          AssignmentResult: open
