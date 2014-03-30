@@ -1,9 +1,17 @@
 require 'test_helper'
 
 class CoursesControllerTest < ActionController::TestCase
+  
   setup do
     @course = courses(:one)
+    @user = User.first
+    sign_in @user
+    @ability = Object.new
+    @ability.extend(CanCan::Ability)
+    @controller.stubs(:current_ability).returns(@ability)
   end
+
+
 
   test "should get index" do
     get :index
@@ -17,6 +25,7 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "should create course" do
+    @ability.can :manage, @course
     assert_difference('Course.count') do
       post :create, course: { code: @course.code, name: @course.name }
     end

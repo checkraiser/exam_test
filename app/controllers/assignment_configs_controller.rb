@@ -26,6 +26,7 @@ class AssignmentConfigsController < ApplicationController
   # POST /assignment_configs
   # POST /assignment_configs.json
   def create
+    authorize! :manage, @course
     @assignment_config = @assignment.assignment_configs.new(assignment_config_params)
 
     respond_to do |format|

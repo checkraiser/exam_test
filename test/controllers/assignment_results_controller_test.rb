@@ -3,6 +3,7 @@ require 'test_helper'
 class AssignmentResultsControllerTest < ActionController::TestCase
   setup do
     @assignment_result = assignment_results(:one)
+    sign_in User.first
   end
 
   test "should get index" do

@@ -26,6 +26,7 @@ class CoursesController < ApplicationController
   # POST /courses
   # POST /courses.json
   def create
+    authorize! :manage, @course
     @course = Course.new(course_params)
 
     respond_to do |format|

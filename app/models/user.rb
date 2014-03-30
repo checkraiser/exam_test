@@ -9,4 +9,7 @@ class User < ActiveRecord::Base
   has_many :courses, :through => :enrollments, :uniq => true
   has_many :assignment_results, :through => :enrollments, :uniq => true
 
+  def is_unique?
+    !User.exists?(:email => email) && !User.exists?(:username => username)
+  end
 end
