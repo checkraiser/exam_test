@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Enrollment:</strong>
+  <%= @assignment_result.enrollment_id %>
+</p>
+
+<p>
+  <strong>Assignment:</strong>
+  <%= @assignment_result.assignment_id %>
+</p>
+
+<p>
+  <strong>Pass:</strong>
+  <%= @assignment_result.pass %>
+</p>
+
+<%= link_to 'Edit', edit_assignment_result_path(@assignment_result) %> |
+<%= link_to 'Back', assignment_results_path %>

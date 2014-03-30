@@ -1,0 +1,31 @@
+<h1>Listing assignment_configs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Assignment</th>
+      <th>Input</th>
+      <th>Output</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @assignment_configs.each do |assignment_config| %>
+      <tr>
+        <td><%= assignment_config.assignment_id %></td>
+        <td><%= assignment_config.input %></td>
+        <td><%= assignment_config.output %></td>
+        <td><%= link_to 'Show', assignment_config %></td>
+        <td><%= link_to 'Edit', edit_assignment_config_path(assignment_config) %></td>
+        <td><%= link_to 'Destroy', assignment_config, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Assignment config', new_assignment_config_path %>

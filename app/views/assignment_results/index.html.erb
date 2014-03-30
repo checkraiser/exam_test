@@ -1,0 +1,31 @@
+<h1>Listing assignment_results</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enrollment</th>
+      <th>Assignment</th>
+      <th>Pass</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @assignment_results.each do |assignment_result| %>
+      <tr>
+        <td><%= assignment_result.enrollment_id %></td>
+        <td><%= assignment_result.assignment_id %></td>
+        <td><%= assignment_result.pass %></td>
+        <td><%= link_to 'Show', assignment_result %></td>
+        <td><%= link_to 'Edit', edit_assignment_result_path(assignment_result) %></td>
+        <td><%= link_to 'Destroy', assignment_result, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Assignment result', new_assignment_result_path %>

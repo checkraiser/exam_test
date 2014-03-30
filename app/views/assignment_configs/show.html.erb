@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Assignment:</strong>
+  <%= @assignment_config.assignment_id %>
+</p>
+
+<p>
+  <strong>Input:</strong>
+  <%= @assignment_config.input %>
+</p>
+
+<p>
+  <strong>Output:</strong>
+  <%= @assignment_config.output %>
+</p>
+
+<%= link_to 'Edit', edit_assignment_config_path(@assignment_config) %> |
+<%= link_to 'Back', assignment_configs_path %>
