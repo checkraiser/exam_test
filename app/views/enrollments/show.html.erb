@@ -2,12 +2,12 @@
 
 <p>
   <strong>User:</strong>
-  <%= @enrollment.user_id %>
+  <%= @enrollment.user %>
 </p>
 
 <p>
   <strong>Course:</strong>
-  <%= @enrollment.course_id %>
+  <%= @enrollment.course %>
 </p>
 
 <p>
@@ -15,5 +15,5 @@
   <%= @enrollment.role %>
 </p>
 
-<%= link_to 'Edit', edit_enrollment_path(@enrollment) %> |
-<%= link_to 'Back', enrollments_path %>
+<%= link_to 'Edit', edit_course_enrollment_path(@course, @enrollment) %> |
+<%= link_to 'Back', course_enrollments_path(@course) %>

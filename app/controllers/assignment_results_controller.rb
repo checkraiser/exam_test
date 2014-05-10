@@ -8,9 +8,7 @@ class AssignmentResultsController < ApplicationController
 
   # GET /assignment_results
   # GET /assignment_results.json
-  def index
-    @assignment_results = @assignment.assignment_results
-  end
+  
 
   # GET /assignment_results/1
   # GET /assignment_results/1.json
@@ -45,7 +43,7 @@ class AssignmentResultsController < ApplicationController
           @assignment.assignment_configs.each do |c|
             File.open(fpath + '/input.txt', 'w') do |f2|
               f2.write(c.input)
-              output = `g++ #{f.path} -o #{fpath}/hello.o && #{fpath}/hello.o #{f2.path}`
+              output = `g++ #{f.path} -o #{fpath}/hello.o &&  #{fpath}/hello.o #{f2.path}`
               if output.strip != c.output.strip
                 res = false
                 break
@@ -80,7 +78,7 @@ class AssignmentResultsController < ApplicationController
           @assignment.assignment_configs.each do |c|
             File.open(fpath + '/input.txt', 'w') do |f2|
               f2.write(c.input)
-              output = `g++ #{f.path} -o #{fpath}/hello.o && #{fpath}/hello.o #{f2.path}`
+              output = `g++ #{f.path} -o #{fpath}/hello.o &&  #{fpath}/hello.o #{f2.path}`
               if output.strip != c.output.strip
                 res = false
                 break

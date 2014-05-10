@@ -20,6 +20,25 @@
   <%= @assignment.description %>
 </p>
 
-<%= link_to 'Config', course_assignment_assignment_configs_path(@course, @assignment) %>
+<% if can? :manage, @course %>
+<p>
+	<strong>Source:</strong>
+	<%= raw CodeRay.scan(@assignment.source, :cplusplus).div(:line_numbers => :table) %>
+</p>
+
+
+<%= link_to 'Config', course_assignment_assignment_configs_path(@course, @assignment) %> | 
 <%= link_to 'Edit', edit_course_assignment_path(@course, @assignment) %> |
+
+<% end %>
+
+<h3>Results:</h3>
+<ul>
+<% @assignment.assignment_results.each do |r| %>
+  <% if r.enrollment.id == @current_enrollment.id %>
+  <li><%= render partial: 'assignment_results/assignment_result', locals: {ar: r} %></li>
+  <% end %>
+<% end %>
+</ul>
+<%= link_to 'Take', [@course, @assignment,@assignment_result] %>
 <%= link_to 'Back', course_assignments_path(@course) %>

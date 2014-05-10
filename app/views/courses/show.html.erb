@@ -11,4 +11,6 @@
 </p>
 
 <%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %>
+<%= link_to 'Back', courses_path %> | 
+<%= link_to 'Enrollments', course_enrollments_path(@course) %> | 
+<%= link_to 'Assignments', course_assignments_path(@course) %>

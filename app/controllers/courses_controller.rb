@@ -26,11 +26,12 @@ class CoursesController < ApplicationController
   # POST /courses
   # POST /courses.json
   def create
-    authorize! :manage, @course
+    authorize! :create, @course
     @course = Course.new(course_params)
 
     respond_to do |format|
       if @course.save
+        @course.enrollments.create!(user_id: current_user.id, role: :teacher)
         format.html { redirect_to @course, notice: 'Course was successfully created.' }
         format.json { render action: 'show', status: :created, location: @course }
       else

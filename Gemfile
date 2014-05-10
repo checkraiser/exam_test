@@ -36,6 +36,7 @@ gem 'devise'
 gem 'cancan'
 gem 'mocha'
 gem 'simple_form'
+gem 'coderay'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

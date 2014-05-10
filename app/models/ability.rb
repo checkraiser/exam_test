@@ -3,8 +3,15 @@ class Ability
 
   def initialize(user)
     if user
+        can :create, Course
+        can :take, Course do |c|
+            c.enrollments.student.include?(user.id)
+        end
         can :manage, Course do |c|
             c.enrollments.teacher.include?(user.id)
+        end
+        can :take, AssignmentResult do |a|
+            (can? :take, a.assignment.course) and !a.locked?
         end
         can [:edit, :update], User do |current_user|
             user.id == current_user.id

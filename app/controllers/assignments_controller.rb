@@ -1,5 +1,6 @@
 class AssignmentsController < ApplicationController
   before_action :set_course
+  before_action :set_enrollment
   before_action :set_assignment, only: [:show, :edit, :update, :destroy]
 
   # GET /assignments
@@ -11,6 +12,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1
   # GET /assignments/1.json
   def show
+    @assignment_result = @assignment.assignment_results.where(enrollment_id: @current_enrollment.id, assignment_id: @assignment.id).first_or_create!
   end
 
   # GET /assignments/new
@@ -25,7 +27,9 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.json
   def create
-    @assignment = @course.assignments.new(assignment_params)
+    ap = assignment_params.clone
+    ap[:source] = ap[:source].read if ap[:source].present?
+    @assignment = @course.assignments.new(ap)
 
     respond_to do |format|
       if @assignment.save
@@ -42,7 +46,9 @@ class AssignmentsController < ApplicationController
   # PATCH/PUT /assignments/1.json
   def update
     respond_to do |format|
-      if @assignment.update(assignment_params)
+      ap = assignment_params.clone
+      ap[:source] = ap[:source].present? ? ap[:source].read : @assignment.source
+      if @assignment.update(ap)
         format.html { redirect_to [@course, @assignment], notice: 'Assignment was successfully updated.' }
         format.json { head :no_content }
       else
@@ -66,6 +72,10 @@ class AssignmentsController < ApplicationController
     def set_course
       @course = Course.find(params[:course_id])
     end
+
+    def set_enrollment
+      @current_enrollment = @course.enrollments.where(user_id: current_user.id).first
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_assignment
       @assignment = @course.assignments.find(params[:id])
@@ -73,6 +83,6 @@ class AssignmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def assignment_params
-      params.require(:assignment).permit(:title, :content, :description)
+      params.require(:assignment).permit(:title, :content, :description, :source, :timeout)
     end
 end

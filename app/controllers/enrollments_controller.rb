@@ -29,7 +29,7 @@ class EnrollmentsController < ApplicationController
 
     respond_to do |format|
       if @enrollment.save
-        format.html { redirect_to @enrollment, notice: 'Enrollment was successfully created.' }
+        format.html { redirect_to [@course, @enrollment], notice: 'Enrollment was successfully created.' }
         format.json { render action: 'show', status: :created, location: @enrollment }
       else
         format.html { render action: 'new' }
@@ -43,7 +43,7 @@ class EnrollmentsController < ApplicationController
   def update
     respond_to do |format|
       if @enrollment.update(enrollment_params)
-        format.html { redirect_to @enrollment, notice: 'Enrollment was successfully updated.' }
+        format.html { redirect_to [@course, @enrollment], notice: 'Enrollment was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -57,7 +57,7 @@ class EnrollmentsController < ApplicationController
   def destroy
     @enrollment.destroy
     respond_to do |format|
-      format.html { redirect_to enrollments_url }
+      format.html { redirect_to course_enrollments_url(@course) }
       format.json { head :no_content }
     end
   end

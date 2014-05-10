@@ -28,12 +28,17 @@ class AssignmentConfigsController < ApplicationController
   # POST /assignment_configs.json
   def create
     authorize! :manage, @course
-    input_file = params[:input]
+    input_file = assignment_config_params[:input]
     input_content = input_file.read
-    output_file = params[:output]
-    output_content = output_file.read
-    @assignment_config = @assignment.assignment_configs.new({input: input_content, output: output_content})
-
+    @assignment_config = @assignment.assignment_configs.create!({input: input_content})
+    fpath = Rails.root.join('tmp').to_s + "/#{@assignment_config.id.to_s}"
+    Dir.mkdir "#{fpath}" unless Dir.exists?(fpath)
+    source = @assignment.source
+    File.open(fpath + '/hello.cpp', 'w')  { |f|  f.write(source)  }
+    File.open(fpath + '/input.txt', 'w') { |f| f.write(input_content) }
+    output = `g++ #{fpath + '/hello.cpp'} -o #{fpath}/hello.o && #{fpath}/hello.o #{fpath + '/input.txt'}`
+    @assignment_config.update({output: output.try(:strip)})
+    `rm -rf #{fpath}`          
     respond_to do |format|
       if @assignment_config.save
         format.html { redirect_to [@course, @assignment, @assignment_config], notice: 'Assignment config was successfully created.' }
@@ -50,10 +55,15 @@ class AssignmentConfigsController < ApplicationController
   def update
     input_file = assignment_config_params[:input]
     input_content = input_file.read
-    output_file = assignment_config_params[:output]
-    output_content = output_file.read
+    fpath = Rails.root.join('tmp').to_s + "/#{@assignment_config.id.to_s}"
+    Dir.mkdir "#{fpath}" unless Dir.exists?(fpath)
+    source = @assignment.source
+    File.open(fpath + '/hello.cpp', 'w')  { |f|  f.write(source)  }
+    File.open(fpath + '/input.txt', 'w') { |f| f.write(input_content) }
+    output = `g++ #{fpath + '/hello.cpp'} -o #{fpath}/hello.o && #{fpath}/hello.o #{fpath + '/input.txt'}`
     respond_to do |format|
-      if @assignment_config.update({input: input_content, output: output_content})
+      if @assignment_config.update({input: input_content, output: output.try(:strip)})
+        `rm -rf #{fpath}`          
         format.html { redirect_to [@course, @assignment, @assignment_config], notice: 'Assignment config was successfully updated.' }
         format.json { head :no_content }
       else

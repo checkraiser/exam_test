@@ -16,9 +16,13 @@
     <%= f.label :input %><br>
     <%= f.file_field :input %>
   </div>
-  <div class="field">
-    <%= f.label :output %><br>
-    <%= f.file_field :output %>
+  <div>
+    <%= f.label :output %><br/>
+    <%= @assignment_config.output %>
+  </div>
+  <div>
+    <%= f.label :source %><br />
+    <%= raw CodeRay.scan(@assignment.source, :cplusplus).div(:line_numbers => :table) %>
   </div>
   <div class="actions">
     <%= f.submit %>
