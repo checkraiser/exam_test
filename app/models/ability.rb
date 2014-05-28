@@ -3,7 +3,9 @@ class Ability
 
   def initialize(user)
     if user
-        can :create, Course
+		if user.is_teacher?
+			can :create, Course				
+		end
         can :take, Course do |c|
             c.enrollments.student.include?(user.id)
         end

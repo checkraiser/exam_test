@@ -31,7 +31,9 @@ group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
-
+group :test, :development do
+	gem 'rspec-rails'
+end
 gem 'devise'
 gem 'cancan'
 gem 'mocha'
@@ -45,6 +47,6 @@ gem 'coderay'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
-
+gem "twitter-bootstrap-rails"
 # Use debugger
 # gem 'debugger', group: [:development, :test]

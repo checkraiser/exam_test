@@ -1,0 +1,7 @@
+<% if @course.assignments.count > 0 %>
+	<ul>
+		<% @course.assignments.each do |as| %>
+			<li><%= link_to as.title, [@course, as] %> <%= link_to 'Configs', course_assignment_assignment_configs_path(@course, as) %></li>
+		<% end %>
+	</ul>
+<% end %>

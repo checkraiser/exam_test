@@ -17,6 +17,9 @@ class User < ActiveRecord::Base
   def is_admin?
   	roles.map(&:name).include?("admin")
   end
+  def is_teacher?
+    roles.map(&:name).include?("teacher")
+  end
   def to_s
     email
   end

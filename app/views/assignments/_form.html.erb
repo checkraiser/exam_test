@@ -22,11 +22,7 @@
   <div class="field">
     <%= f.label :description %><br>
     <%= f.text_area :description %>
-  </div>
-  <div class="field">
-    <%= f.label :timeout %><br>
-    <%= f.text_area :timeout %>
-  </div>
+  </div> 
   <p>
   <strong>Source:</strong>
     <%= raw CodeRay.scan(@assignment.source, :cplusplus).div(:line_numbers => :table) %>

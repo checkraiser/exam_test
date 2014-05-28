@@ -10,7 +10,19 @@
   <%= @course.code %>
 </p>
 
-<%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %> | 
-<%= link_to 'Enrollments', course_enrollments_path(@course) %> | 
-<%= link_to 'Assignments', course_assignments_path(@course) %>
+
+<h2>Enrollments:</h2>
+	<%= render 'enrollment_partial' %>
+<h2>Assignments:</h2>
+	<%= render 'assignment_partial' %>
+
+<% content_for :sidebar do %>
+	<% if can? :manage, @course %>
+	<h6>Course Management:</h6>
+	<ul>
+		<li><%= link_to 'Edit course', edit_course_path(@course), :class => 'btn btn-default' %></li>
+		<li><%= link_to 'New enrollment',  new_course_enrollment_path(@course) , :class => 'btn btn-default' %></li>
+		<li><%= link_to 'New assignment', new_course_assignment_path(@course), :class => 'btn btn-default' %></li>
+	</ul>
+	<% end %>	
+<% end %>
