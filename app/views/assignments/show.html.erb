@@ -26,10 +26,6 @@
 	<%= raw CodeRay.scan(@assignment.source, :cplusplus).div(:line_numbers => :table) %>
 </p>
 
-
-<%= link_to 'Config', course_assignment_assignment_configs_path(@course, @assignment) %> | 
-<%= link_to 'Edit', edit_course_assignment_path(@course, @assignment) %> |
-
 <% end %>
 
 <h3>Results:</h3>
@@ -40,18 +36,8 @@
   <% end %>
 <% end %>
 </ul>
-<%= link_to 'Take', [@course, @assignment,@assignment_result] %>
 
 
-<% content_for :sidebar do %>
-    
-	<% if can? :manage, @course %>
-	<h6>Course Management:</h6>
-	<ul>
-		<li><%= link_to 'Edit course', edit_course_path(@course), :class => 'btn btn-default' %></li>
-		<li><%= link_to 'New enrollment',  new_course_enrollment_path(@course) , :class => 'btn btn-default' %></li>
-		<li><%= link_to 'New assignment', new_course_assignment_path(@course), :class => 'btn btn-default' %></li>
-	</ul>
-	<% end %>	
-	<%= link_to 'Back to course', course_assignments_path(@course), :class => 'btn btn-primary' %>
+<% content_for :sidebar do %>    
+	<%= render 'sidebar' %>	
 <% end %>

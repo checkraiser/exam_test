@@ -1,24 +1,8 @@
-<%= form_for([@course, @assignment, @assignment_config], :multipart => true) do |f| %>
-  <% if @assignment_config.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@assignment_config.errors.count, "error") %> prohibited this assignment_config from being saved:</h2>
-
-      <ul>
-      <% @assignment_config.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<%= form_for([@course, @assignment, @assignment.assignment_configs.new], :multipart => true) do |f| %>  
   
   <div class="field">
     <%= f.label :input %><br>
     <%= f.file_field :input %>
-  </div>
-  <div>
-    <%= f.label :output %><br/>
-    <%= @assignment_config.output %>
   </div>
   <div>
     <%= f.label :source %><br />

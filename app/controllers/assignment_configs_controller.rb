@@ -36,7 +36,7 @@ class AssignmentConfigsController < ApplicationController
     source = @assignment.source
     File.open(fpath + '/hello.cpp', 'w')  { |f|  f.write(source)  }
     File.open(fpath + '/input.txt', 'w') { |f| f.write(input_content) }
-    output = `g++ #{fpath + '/hello.cpp'} -o #{fpath}/hello.o && #{fpath}/hello.o #{fpath + '/input.txt'}`
+    output = `g++ #{fpath + '/hello.cpp'} -o #{fpath}/hello.exe && #{fpath}/hello.exe #{fpath + '/input.txt'}`
     @assignment_config.update({output: output.try(:strip)})
     `rm -rf #{fpath}`          
     respond_to do |format|

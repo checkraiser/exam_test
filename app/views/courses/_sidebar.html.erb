@@ -1,0 +1,7 @@
+<h6>Course Management:</h6>
+	<ul>
+		<li><%= link_to 'Edit course', edit_course_path(@course), :class => 'btn btn-default' %></li>
+		<li><%= link_to 'New enrollment',  new_course_enrollment_path(@course) , :class => 'btn btn-default' %></li>
+		<li><%= link_to 'New assignment', new_course_assignment_path(@course), :class => 'btn btn-default' %></li>
+		<li><%= link_to 'Back to course', course_path(@course), :class => 'btn btn-default' %></li>
+	</ul>

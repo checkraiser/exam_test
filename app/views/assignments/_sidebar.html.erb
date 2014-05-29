@@ -1,0 +1,10 @@
+<% if can? :manage, @course %>
+	<%= render 'courses/sidebar' %>
+	<h6>Assignment Management:</h6>
+	<ul>
+		<li><%= link_to 'Config', course_assignment_assignment_configs_path(@course, @assignment), :class => 'btn btn-default' %> </li>
+		<li><%= link_to 'Edit', edit_course_assignment_path(@course, @assignment), :class => 'btn btn-default' %> </li>
+		<li><%= link_to 'Back to assignment', course_assignment_path(@course, @assignment), :class => 'btn btn-default' %></li>
+	</ul>
+	<% end %>	
+	

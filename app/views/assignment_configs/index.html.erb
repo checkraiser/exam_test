@@ -27,6 +27,8 @@
 </table>
 
 <br>
+<%= render 'form' %>
 
-<%= link_to 'New Assignment config', new_course_assignment_assignment_config_path(@course, @assignment) %>
-<%= link_to 'Back to assignment', course_assignment_path(@course, @assignment) %>
+<% content_for :sidebar do %>
+  <%= render 'sidebar' %>  
+<% end %>
