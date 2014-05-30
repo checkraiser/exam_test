@@ -25,17 +25,22 @@
 	<strong>Source:</strong>
 	<%= raw CodeRay.scan(@assignment.source, :cplusplus).div(:line_numbers => :table) %>
 </p>
-
 <% end %>
 
-<h3>Results:</h3>
-<ul>
-<% @assignment.assignment_results.each do |r| %>
-  <% if r.enrollment.id == @current_enrollment.id %>
-  <li><%= render partial: 'assignment_results/assignment_result', locals: {ar: r} %></li>
+<% if can? :take, @assignment %>  
+  <% if current_user.is_pass?(@assignment) %>
+    <h3>Result:</h3>
+    <ul>
+    <% @assignment.assignment_results.each do |r| %>
+      <% if r.enrollment.id == @current_enrollment.id %>
+      <li><%= render partial: 'assignment_results/assignment_result', locals: {ar: r} %></li>
+      <% end %>
+    <% end %>
+    </ul>  
+  <% else %>
+    <%= render 'assignment_results/form' %>
   <% end %>
 <% end %>
-</ul>
 
 
 <% content_for :sidebar do %>    

@@ -48,5 +48,6 @@ gem 'coderay'
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
 gem "twitter-bootstrap-rails"
+
 # Use debugger
 # gem 'debugger', group: [:development, :test]

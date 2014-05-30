@@ -3,13 +3,13 @@
 
   <div class="field">
     <%= f.label :email %><br>
-    <%= f.text_field :email %>
+    <%= collection_select(:enrollment, :user_id, User.all, :id, :email) %>
   </div>
   <div class="field">
     <%= f.label :role %><br>
-    <%= f.text_field :role %>
+    <%= select(:enrollment, :role, [['Giảng viên','teacher'],['Sinh viên', 'student']]) %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn btn-default' %>
   </div>
 <% end %>

@@ -1,4 +1,5 @@
 Exam::Application.routes.draw do
+ 
   resources :roles
 
   root to: "home#index"

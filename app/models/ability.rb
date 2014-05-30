@@ -2,15 +2,19 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    if user
-		if user.is_teacher?
-			can :create, Course				
-		end
-        can :take, Course do |c|
-            c.enrollments.student.include?(user.id)
+    user ||= User.new
+    if user        
+        if user.is_admin?
+            can :manage, :all
+        end
+        if user.is_teacher?
+            can :create, Course
+        end
+        can :take, Assignment do |as|
+            as.course.enrollments.student.map(&:user_id).include?(user.id)
         end
         can :manage, Course do |c|
-            c.enrollments.teacher.include?(user.id)
+            c.enrollments.teacher.map(&:user_id).include?(user.id)
         end
         can :take, AssignmentResult do |a|
             (can? :take, a.assignment.course) and !a.locked?
@@ -18,9 +22,7 @@ class Ability
         can [:edit, :update], User do |current_user|
             user.id == current_user.id
         end
-        if user.is_admin?
-            can :manage, :all
-        end
+        
     end
     # Define abilities for the passed in user here. For example:
     #

@@ -23,4 +23,20 @@ class User < ActiveRecord::Base
   def to_s
     email
   end
+  def enrollment(course)
+    course.enrollments.where(user_id: self.id).first
+  end
+  def is_student?(course)
+    en = enrollment(course)
+    return false unless en
+    return en.user_id == self.id
+  end
+  def is_pass?(assignment)
+    course = assignment.course
+    en = enrollment(course)
+    return false unless en    
+    ar = assignment.assignment_results.where(enrollment_id: en.id).first
+    return false unless ar
+    return ar.pass
+  end
 end
