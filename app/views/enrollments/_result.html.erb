@@ -1,3 +1,7 @@
+Thống kế kết quả:
+Họ và tên sinh viên: <%= @enrollment.user.username %><br />
+Ngày tháng năm sinh: <%= @enrollment.user.birthday %><br />
+Email: <%= @enrollment.user.email %><br />
 <% if @enrollment.assignment_results.count > 0 %>
 	<table class="table">
 		<thead>

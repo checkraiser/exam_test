@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="span6">
+
 <h3>Giảng viên:</h3>
 <% if @course.enrollments.where(role: :teacher).count > 0 %>
 	<ul>
@@ -13,23 +13,51 @@
 	</ul>
 <% end %>
 </div>
-<div class="span6">
-<h3>Sinh viên:</h3>
-<% if @course.enrollments.where(role: :student).count > 0 %>
-	<ul>
-		<% @course.enrollments.where(role: :student).each do |en| %>
-			<li><%= link_to en.user.email, [@course, en] %> 
-			<% if can? :manage, @course %>
-				| <%= link_to 'Delete', [@course, en], method: :delete, data: { confirm: 'Are you sure?' } , :class => 'btn btn-danger' %>
-			<% end %> </li>
-		<% end %>
-	</ul>
-<% end %>
-</div>
-</div>
+<hr />
+<div class="row">
+
 <% if can? :manage, @course %>
 <div class="row">
 	<h2>Phân quyền</h2>	
 	<%= render 'enrollments/form' %>
 </div>
 <% end %>
+</div>
+
+<hr />
+<h3>Kết quả</h3>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Stt</td>
+			<td>Họ và tên</td>
+			<td>Email</td>
+			<td>Ngày sinh</td>
+			<td>Bài lab</td>
+			<td>Kết quả</td>
+			<% if can? :manage, @course %>
+				<td>Xóa khỏi lớp</td>
+			<% end %>
+		</tr>
+	</thead>
+	<tbody>
+		<% @course.enrollments.includes(:assignment_results).each_with_index do |en, index| %>
+			
+				<% en.assignment_results.each do |ar| %>
+				<tr>
+					<td><%= index %></td>
+					<td><%= en.user.username %></td>
+					<td><%= en.user.email %></td>
+					<td><%= en.user.birthday %></td>
+					<td><%= ar.assignment.title %></td>
+					<td><%= ar.pass || "fail" %></td>					
+					<% if can? :manage, @course %>				>
+					<td> <%= link_to 'x', [@course, en], method: :delete, data: { confirm: 'Are you sure?' } , :class => 'btn btn-danger' %></td>
+				<% end %> 
+				</tr>
+				<% end %>
+				
+			</tr>
+		<% end %>
+	</tbody>
+</table>
