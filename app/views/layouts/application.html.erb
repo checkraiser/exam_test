@@ -46,10 +46,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">Exam</a>
+          <a class="brand" href="/">Trường Cao Đẳng Công Nghiệp Huế - Khoa Công nghệ Thông Tin</a>
+          <ul class="nav navbar-nav pull-left">            
+          <% if can? :manage, :all %>
+            <li><a href="/admin">Admin</a></li>            
+          <% end %>
+
+        </ul>
           <div class="container nav-collapse">
             <ul class="nav navbar-nav pull-right">
+              <li><a href="https://www.facebook.com/hueic.ProgAlgo">Kênh giao tiếp</a</li>
 			<% if user_signed_in? %>
+              <li><%= link_to "Profile", "/profile" %></li>
               <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
 			<% else %>
               <li><%= link_to "Sign in", new_user_session_path %></li>
@@ -62,6 +70,7 @@
     </div>
 
     <div class="container">
+        
         <div class="row">
           <div class="span9">
             <%= bootstrap_flash %>
@@ -78,7 +87,7 @@
 		
 	<% end %>
   <br/>
-	<% if can? :create, Course %>
+	<% if current_user and current_user.is_teacher? %>
 		<%= link_to 'Create new course', new_course_path, :class => 'btn btn-default' %>
 	<% end %>
   </ul>
@@ -86,9 +95,11 @@
 <% end %>
           </div><!--/span-->
         </div><!--/row-->
-		
+		  <hr />
       <footer>
-        <p>&copy; Company 2014</p>
+        <p>Trường Cao Đẳng Công Nghiệp Huế</p>
+        <p>Địa chỉ: 70 Nguyễn Huệ; Điện thoại: (054)-3822813; Fax: 054-845934.</p>
+        <p>Bản quyền thuộc Khoa Công nghệ Thông tin - Trường Cao Đẳng Công Nghiệp Huế</p>
       </footer>
 
     </div> <!-- /container -->

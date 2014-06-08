@@ -3,27 +3,31 @@ class Ability
 
   def initialize(user)
     user ||= User.new
-    if user        
-        if user.is_admin?
-            can :manage, :all
-        end
-        if user.is_teacher?
-            can :create, Course
-        end
-        can :take, Assignment do |as|
-            as.course.enrollments.student.map(&:user_id).include?(user.id)
-        end
-        can :manage, Course do |c|
-            c.enrollments.teacher.map(&:user_id).include?(user.id)
-        end
-        can :take, AssignmentResult do |a|
-            (can? :take, a.assignment.course) and !a.locked?
-        end
-        can [:edit, :update], User do |current_user|
-            user.id == current_user.id
-        end
-        
+    
+    
+    cannot :create, Course unless user.is_teacher?
+    
+    if user.is_admin?            
+        can :manage, :all
     end
+
+    
+    can :take, Assignment do |as|
+        enr = as.course.enrollments.student.where(user_id: user.id).first                    
+        ar = AssignmentResult.where(assignment_id: as.id, enrollment_id: enr.id).first if enr
+        as.assignment_configs.count > 0 and enr and ar and ar.pass != true                        
+    end
+    can :manage, Course do |c|
+        c.enrollments.teacher.map(&:user_id).include?(user.id)
+    end
+    can :take, AssignmentResult do |a|
+        (can? :take, a.assignment.course) and !a.locked?
+    end
+    can [:edit, :update], User do |current_user|
+        user.id == current_user.id
+    end
+        
+    
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
@@ -51,8 +55,5 @@ class Ability
     # See the wiki for details:
     # https://github.com/ryanb/cancan/wiki/Defining-Abilities
   end
-  
-  def self.context_types(file='roles.yml')
-    YAML.load(File.read("#{Rails.root.to_s}/config/#{file}"))['types']
-  end
+    
 end

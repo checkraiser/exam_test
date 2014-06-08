@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140402065604) do
+ActiveRecord::Schema.define(version: 20140608154803) do
 
   create_table "assignment_configs", force: true do |t|
     t.integer  "assignment_id"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20140402065604) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "source"
+    t.text     "output"
   end
 
   create_table "assignments", force: true do |t|
@@ -77,6 +78,8 @@ ActiveRecord::Schema.define(version: 20140402065604) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role"
+    t.string   "username"
+    t.string   "birthday"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

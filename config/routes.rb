@@ -9,12 +9,23 @@ Exam::Application.routes.draw do
     resources :assignments do 
       resources :assignment_configs
       resources :assignment_results
+      member do 
+        get "/report" => "assignments#report"
+      end
     end
   end
-
+  resources :users
   namespace :admin do 
+    root to: "admin#index"
     resources :courses
+    resources :users do
+      collection do 
+        post "/import_teachers" => "users#import_teachers"        
+        post "/import_students" => "users#import_students"   
+      end      
+    end
   end
+  get "/profile" => "users#profile"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

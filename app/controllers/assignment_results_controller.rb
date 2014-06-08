@@ -4,6 +4,7 @@ require 'tempfile'
 class AssignmentResultsController < ApplicationController
   before_action :set_course
   before_action :set_assignment
+  before_action :set_enrollment
   before_action :set_assignment_result, only: [:show, :edit, :update, :destroy]
 
   # GET /assignment_results
@@ -28,8 +29,8 @@ class AssignmentResultsController < ApplicationController
   # POST /assignment_results.json
   def create
     source_content = assignment_result_params[:source].read
-    @assignment_result = @assignment.assignment_results.new({source: source_content})
-    
+    @assignment_result = @assignment.assignment_results.where(enrollment_id: @current_enrollment.id).first_or_create    
+    @assignment_result.update(source: source_content)
     
     respond_to do |format|
       if @assignment_result.save
@@ -40,15 +41,14 @@ class AssignmentResultsController < ApplicationController
         end
         res = true
         File.open(fpath + '/hello.cpp','r') do |f|
-          @assignment.assignment_configs.each do |c|
-            File.open(fpath + '/input.txt', 'w') do |f2|
-              f2.write(c.input)
-              output = `g++ #{f.path} -o #{fpath}/hello.o &&  #{fpath}/hello.o #{f2.path}`
-              if output.strip != c.output.strip
-                res = false
-                break
-              end
-            end
+          @assignment.assignment_configs.each_with_index do |c, index|            
+            output = `g++ #{f.path} -o #{fpath}/hello#{index}.exe &&  #{fpath}/hello#{index}.exe #{c.input}`            
+            logger.debug("Output" + output.strip)
+            logger.debug("Expected Output" + c.output.strip)
+            if output.strip != c.output.strip
+              res = false
+              break
+            end            
           end
         end
         @assignment_result.update(pass: res)
@@ -75,15 +75,16 @@ class AssignmentResultsController < ApplicationController
         end
         res = true
         File.open(fpath + '/hello.cpp','r') do |f|
-          @assignment.assignment_configs.each do |c|
-            File.open(fpath + '/input.txt', 'w') do |f2|
-              f2.write(c.input)
-              output = `g++ #{f.path} -o #{fpath}/hello.o &&  #{fpath}/hello.o #{f2.path}`
-              if output.strip != c.output.strip
-                res = false
-                break
-              end
+          @assignment.assignment_configs.each_with_index do |c, index|                        
+            output = `g++ #{f.path} -o #{fpath}/hello#{index}.exe &&  #{fpath}/hello#{index}.exe #{c.input}`            
+            logger.debug("Output" + output)
+            logger.debug("Expected Output" + c.output.strip)
+            logger.debug(output.strip == c.output.strip)
+            if output.strip != c.output.strip
+              res = false
+              break
             end
+            
           end
         end
         @assignment_result.update(pass: res)
@@ -113,6 +114,9 @@ class AssignmentResultsController < ApplicationController
     end
     def set_assignment
       @assignment = @course.assignments.find(params[:assignment_id])
+    end
+    def set_enrollment
+      @current_enrollment = @course.enrollments.where(user_id: current_user.id).first
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_assignment_result

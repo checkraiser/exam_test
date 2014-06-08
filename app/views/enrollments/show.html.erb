@@ -2,7 +2,7 @@
 
 <p>
   <strong>User:</strong>
-  <%= @enrollment.user %>
+  <%= link_to @enrollment.user, @enrollment.user %>
 </p>
 
 <p>
@@ -14,6 +14,5 @@
   <strong>Role:</strong>
   <%= @enrollment.role %>
 </p>
-
-<%= link_to 'Edit', edit_course_enrollment_path(@course, @enrollment) %> |
+<%= render "result" %>
 <%= link_to 'Back', course_enrollments_path(@course) %>

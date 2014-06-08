@@ -7,7 +7,7 @@ class Enrollment < ActiveRecord::Base
 
 	scope :teacher,  where(role: :teacher)
 	scope :student,  where(role: :student)
-
+	
 	
 
 end

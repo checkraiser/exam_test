@@ -35,7 +35,7 @@ group :test, :development do
 	gem 'rspec-rails'
 end
 gem 'devise'
-gem 'cancan'
+gem 'cancancan', '~> 1.8'
 gem 'mocha'
 gem 'simple_form'
 gem 'coderay'
@@ -48,6 +48,7 @@ gem 'coderay'
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
 gem "twitter-bootstrap-rails"
-
+gem "select2-rails"
+gem 'kaminari'
 # Use debugger
 # gem 'debugger', group: [:development, :test]

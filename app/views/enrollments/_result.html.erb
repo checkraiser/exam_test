@@ -1,0 +1,18 @@
+<% if @enrollment.assignment_results.count > 0 %>
+	<table class="table">
+		<thead>
+			<tr>				
+				<td>Assignment</td>
+				<td>Result</td>
+			</tr>
+		</thead>
+		<tbody>
+			<% @enrollment.assignment_results.each_with_index do |re, index| %>
+				<tr>
+					<td><%= link_to re.assignment.title, [@course, re.assignment] %></td>
+					<td><%= re.pass || "fail" %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% end %>

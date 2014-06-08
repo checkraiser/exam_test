@@ -13,11 +13,11 @@
   </thead>
 
   <tbody>
-    <% @assignment_configs.each do |assignment_config| %>
+    <% @assignment_configs.each_with_index do |assignment_config, index| %>
       <tr>
-        <td><%= assignment_config.assignment_id %></td>
+        <td><%= index + 1 %></td>
         <td><%= assignment_config.input %></td>
-        <td><%= assignment_config.output %></td>
+        <td><%= simple_format assignment_config.output %></td>
         <td><%= link_to 'Show', course_assignment_assignment_config_path(@course, @assignment, assignment_config) %></td>
         <td><%= link_to 'Edit', edit_course_assignment_assignment_config_path(@course, @assignment, assignment_config) %></td>
         <td><%= link_to 'Destroy', course_assignment_assignment_config_path(@course, @assignment, assignment_config), method: :delete, data: { confirm: 'Are you sure?' } %></td>

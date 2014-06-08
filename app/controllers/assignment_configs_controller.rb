@@ -6,7 +6,7 @@ class AssignmentConfigsController < ApplicationController
   # GET /assignment_configs
   # GET /assignment_configs.json
   def index
-    authorize! :manage, Assignment
+    authorize! :manage, @course
     @assignment_configs = @assignment.assignment_configs
   end
 
@@ -24,6 +24,30 @@ class AssignmentConfigsController < ApplicationController
   def edit
   end
 
+
+  def create
+    authorize! :manage, @course
+    input_file = assignment_config_params[:input]
+    input_content = input_file.read
+    @assignment_config = @assignment.assignment_configs.create!({input: input_content})
+    fpath = Rails.root.join('tmp').to_s + "/#{@assignment_config.id.to_s}"
+    Dir.mkdir "#{fpath}" unless Dir.exists?(fpath)
+    source = @assignment.source
+    File.open(fpath + '/hello.cpp', 'w')  { |f|  f.write(source)  }
+    output = `g++ #{fpath + '/hello.cpp'} -o #{fpath}/hello.exe && #{fpath}/hello.exe #{input_content}`
+    @assignment_config.update({output: output.try(:strip)})
+    `rm -rf #{fpath}`          
+    respond_to do |format|
+      if @assignment_config.save
+        format.html { redirect_to course_assignment_assignment_configs_path(@course, @assignment), notice: 'Assignment config was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @assignment_config }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @assignment_config.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+=begin  
   # POST /assignment_configs
   # POST /assignment_configs.json
   def create
@@ -49,10 +73,11 @@ class AssignmentConfigsController < ApplicationController
       end
     end
   end
-
+=end
   # PATCH/PUT /assignment_configs/1
   # PATCH/PUT /assignment_configs/1.json
   def update
+    authorize! :manage, @course
     input_file = assignment_config_params[:input]
     input_content = input_file.read
     fpath = Rails.root.join('tmp').to_s + "/#{@assignment_config.id.to_s}"
@@ -76,6 +101,7 @@ class AssignmentConfigsController < ApplicationController
   # DELETE /assignment_configs/1
   # DELETE /assignment_configs/1.json
   def destroy
+    authorize! :manage, @course
     @assignment_config.destroy
     respond_to do |format|
       format.html { redirect_to course_assignment_assignment_configs_url(@course, @assignment) }

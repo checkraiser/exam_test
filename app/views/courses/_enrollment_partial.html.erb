@@ -1,25 +1,35 @@
 <div class="row">
-	<div class="col-md-6">
-<h3>Teachers:</h3>
-<% if @course.enrollments.teacher.count > 0 %>
+	<div class="span6">
+<h3>Giảng viên:</h3>
+<% if @course.enrollments.where(role: :teacher).count > 0 %>
 	<ul>
-		<% @course.enrollments.teacher.each do |en| %>
-			<li><%= link_to en.user.email, [@course, en] %>  | <%= link_to 'Delete', [@course, en], method: :delete, data: { confirm: 'Are you sure?' } , :class => 'btn btn-danger' %></li>
+		<% @course.enrollments.where(role: :teacher).each do |en| %>
+			<li><%= link_to en.user.email, [@course, en] %> 
+			<% if can? :manage, @course %>
+				 | <%= link_to 'Delete', [@course, en], method: :delete, data: { confirm: 'Are you sure?' } , :class => 'btn btn-danger' %>
+			<% end %>
+			</li>
 		<% end %>
 	</ul>
 <% end %>
 </div>
-<div class="col-md-6">
-<h3>Students:</h3>
-<% if @course.enrollments.student.count > 0 %>
+<div class="span6">
+<h3>Sinh viên:</h3>
+<% if @course.enrollments.where(role: :student).count > 0 %>
 	<ul>
-		<% @course.enrollments.student.each do |en| %>
-			<li><%= link_to en.user.email, [@course, en] %> | <%= link_to 'Delete', [@course, en], method: :delete, data: { confirm: 'Are you sure?' } , :class => 'btn btn-danger' %> </li>
+		<% @course.enrollments.where(role: :student).each do |en| %>
+			<li><%= link_to en.user.email, [@course, en] %> 
+			<% if can? :manage, @course %>
+				| <%= link_to 'Delete', [@course, en], method: :delete, data: { confirm: 'Are you sure?' } , :class => 'btn btn-danger' %>
+			<% end %> </li>
 		<% end %>
 	</ul>
 <% end %>
 </div>
 </div>
+<% if can? :manage, @course %>
 <div class="row">
+	<h2>Phân quyền</h2>	
 	<%= render 'enrollments/form' %>
 </div>
+<% end %>

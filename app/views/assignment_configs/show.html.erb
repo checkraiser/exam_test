@@ -10,10 +10,10 @@
   <%= @assignment_config.input %>
 </p>
 
-<p>
+
   <strong>Output:</strong>
-  <%= @assignment_config.output %>
-</p>
+  <%= simple_format(@assignment_config.output) %>
+
 
 <%= link_to 'Edit', edit_course_assignment_assignment_config_path(@course, @assignment, @assignment_config) %> |
 <%= link_to 'Back', course_assignment_assignment_configs_path(@course, @assignment) %>

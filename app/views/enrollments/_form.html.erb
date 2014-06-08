@@ -2,8 +2,8 @@
   
 
   <div class="field">
-    <%= f.label :email %><br>
-    <%= collection_select(:enrollment, :user_id, User.all, :id, :email) %>
+    <%= f.label :email %><br>    
+    <%= f.hidden_field :user_id, class: 'select2 ajax', data: { source: users_path } %>
   </div>
   <div class="field">
     <%= f.label :role %><br>
@@ -13,3 +13,22 @@
     <%= f.submit class: 'btn btn-default' %>
   </div>
 <% end %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('.select2').each(function(i, e){
+  var select = $(e)
+  options = {}
+  if (select.hasClass('ajax')) {
+    options.ajax = {
+      url: select.data('source'),
+      dataType: 'json',
+      data: function(term, page) { return { q: term, page: page, per: 10 } },
+      results: function(data, page) { return { results: data } }
+    }
+    options.dropdownCssClass = "bigdrop"
+    options.width = "resolve"
+  }
+  select.select2(options);
+})
+});
+</script>

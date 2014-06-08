@@ -5,7 +5,7 @@ class EnrollmentsController < ApplicationController
   # GET /enrollments
   # GET /enrollments.json
   def index
-    @enrollments = @course.enrollments
+    @enrollments = @course.enrollments    
   end
 
   # GET /enrollments/1
@@ -25,11 +25,12 @@ class EnrollmentsController < ApplicationController
   # POST /enrollments
   # POST /enrollments.json
   def create
-    @enrollment = @course.enrollments.new(enrollment_params)
+    @enrollment = @course.enrollments.where(user_id: enrollment_params[:user_id]).first_or_create!
+    @enrollment.role = enrollment_params[:role]
 
     respond_to do |format|
       if @enrollment.save
-        format.html { redirect_to [@course, @enrollment], notice: 'Enrollment was successfully created.' }
+        format.html { redirect_to @course, notice: 'Enrollment was successfully created.' }
         format.json { render action: 'show', status: :created, location: @enrollment }
       else
         format.html { render action: 'new' }
@@ -57,7 +58,7 @@ class EnrollmentsController < ApplicationController
   def destroy
     @enrollment.destroy
     respond_to do |format|
-      format.html { redirect_to course_enrollments_url(@course) }
+      format.html { redirect_to @course }
       format.json { head :no_content }
     end
   end
